@@ -1,6 +1,7 @@
 import logging
 import asyncio
 from aiogram import types
+from tasks import delayed_echo_task
 
 # Настройка логирования
 logger = logging.getLogger(__name__)
@@ -26,5 +27,6 @@ async def echo_message(message: types.Message):
     user_text: str = message.text  # Текст сообщения
     logger.info(f"{user_name} (ID: {user_id}) отправил сообщение: {user_text}")
 
-    await asyncio.sleep(10)  # Ждем 10 секунд
-    await message.answer(user_text)  # Отправляем текст обратно
+    # Как пример, выносим задачу отдельно в celery и redis.
+    # Таким образом любые задачи можно распределять по серверам для уменьшения нагрузки
+    await delayed_echo_task(user_id, user_text)
