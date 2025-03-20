@@ -16,6 +16,7 @@ celery = Celery('tasks', broker='redis://redis:6379/0')
 
 # Асинхронная функция для отправки сообщения
 async def delayed_send(chat_id, text):
+    # С помощью Celery можно разные тяжелые задачи которые занимают время выполнять в фоне
     await asyncio.sleep(10) # Ждем 10 секунд
     await bot.send_message(chat_id, text) # Отправляем текст обратно пользователю
 
